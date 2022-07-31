@@ -6,6 +6,7 @@ public interface IProductRepository
     Task<IReadOnlyList<Product>> GetProductsAsync();
 
     Task<IReadOnlyList<ProductBrand>> GetAllProductsBrandsAsync();
+
     Task<IReadOnlyList<ProductType>> GetAllProductsTypesAsync();
 
 }

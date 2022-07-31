@@ -3,10 +3,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddStartUpExtentions();
 builder.Services.AddStroreDbContext(connectionString);
 var app = builder.Build();
-await ApplyMigrations(app);
+await app.Services.ApplyMigrations();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -23,17 +23,3 @@ app.MapControllers();
 
 app.Run();
 
-static async Task ApplyMigrations(WebApplication app)
-{
-    await using var scoped = app.Services.CreateAsyncScope();
-    using var storeContext = scoped.ServiceProvider.GetRequiredService<StoreContext>();
-    try
-    {
-        await storeContext.Database.MigrateAsync();
-        await StoreContextSeed.SeedAsync(storeContext, app.Logger);
-    }
-    catch (Exception exception)
-    {
-        app.Logger.LogError("An Error Occured During Database Migration ,{exception}", exception);
-    }
-}

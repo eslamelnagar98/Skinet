@@ -34,40 +34,6 @@ public class StoreContextSeed
                     await productSeet?.ProductSeedMethod?.Invoke();
                 }
             }
-            //var productBrandsIsEmpty = await storeContext.ProductBrands.CountAsync() == 0;
-            //var productTypeIsEmpty = await storeContext.ProductTypes.CountAsync() == 0;
-            //var productsIsEmpty = await storeContext.Products.CountAsync() == 0;
-            //var productBrandfilePath = "brands.json";
-            //var productTypefilePath = "types.json";
-            //var productsfilePath = "products.json";
-
-            //var tablesIsEmptyDictionary = new Dictionary<string, bool>
-            //{
-            //    {"productBrandsIsEmpty",productBrandsIsEmpty },
-            //    {"productTypeIsEmpty",productTypeIsEmpty },
-            //    {"productsIsEmpty",productsIsEmpty },
-            //};
-
-
-            //var productSeetDictionary = new Dictionary<string, Func<Task>>
-            //{
-            //    { "productBrandsIsEmpty",async()=>await AddskinetSeedData<ProductBrand>(storeContext, productBrandfilePath) },
-            //    { "productTypeIsEmpty",async()=>await AddskinetSeedData<ProductType>(storeContext, productTypefilePath) },
-            //    { "productsIsEmpty",async()=>await AddskinetSeedData<Product>(storeContext, productsfilePath) },
-            //};
-
-            //foreach (var productSeet in productSeetDictionary)
-            //{
-            //    tablesIsEmptyDictionary.TryGetValue(productSeet.Key, out var isEmpty);
-            //    if (isEmpty)
-            //    {
-            //        await productSeet.Value?.Invoke();
-            //    }
-            //}
-
-
-
-
             await storeContext.SaveChangesAsync();
         }
         catch (Exception exception)
