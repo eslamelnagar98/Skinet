@@ -5,6 +5,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddStartUpExtentions();
 builder.Services.AddStroreDbContext(connectionString);
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
 var app = builder.Build();
 await app.Services.ApplyMigrations();
 if (app.Environment.IsDevelopment())
@@ -16,7 +17,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
-
+app.UseStaticFiles();
 app.UseAuthorization();
 
 app.MapControllers();

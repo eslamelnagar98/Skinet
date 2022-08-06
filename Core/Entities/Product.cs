@@ -8,7 +8,6 @@ public class Product : BaseEntity
     public ProductType ProductType { get; set; }
     public int ProductTypeId { get; set; }
     public ProductBrand ProductBrand { get; set; }
-    public int ProductBrandI { get; set; }
     public int ProductBrandId { get; set; }
 }
 
