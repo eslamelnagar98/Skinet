@@ -1,9 +1,5 @@
-﻿using Core.Specifications;
-
-namespace API.Controllers;
-[ApiController]
-[Route("api/products")]
-public class ProductsController : ControllerBase
+﻿namespace API.Controllers;
+public class ProductsController : BaseApiController
 {
     private readonly IGenericRepository<Product> _productRepository;
     private readonly IGenericRepository<ProductBrand> _productBrand;
@@ -46,10 +42,16 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ProductToReturnDto),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Product>> GetProduct(int id)
     {
         var specification = new ProductsWithTypesAndBrandsSpecification(id);
         var product = await _productRepository.GetEntityWithSpecification(specification);
+        if (product is null)
+        {
+            return NotFound(new ApiResponse(404));
+        }
         var productToReturn = _mapper.Map<ProductToReturnDto>(product);
         return Ok(productToReturn);
     }

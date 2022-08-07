@@ -1,5 +1,5 @@
 ﻿namespace API.Configurations;
-public static class Extension
+public partial class Extension
 {
     public static string NullOrEmptyProduct(this IGuardClause guard,Product product , IConfiguration configuration)
     {
