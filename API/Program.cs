@@ -3,20 +3,26 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddStroreDbContext(connectionString);
+builder.Services.AddCommonServices()
+                .AddStroreDbContext(connectionString)
+                .AddAutoMapper(typeof(MappingProfiles))
+                .ConfigureBadRequestBehaviour()
+                .ConfigureCorsOrigins();
 var app = builder.Build();
+await app.Services.ApplyMigrations();
+app.UseMiddleware<ExeptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerDocumentation();
 }
-
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
+app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
+app.UseStaticFiles();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
