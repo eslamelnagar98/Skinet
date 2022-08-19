@@ -1,6 +1,4 @@
-﻿using Infrastructure.Data.DTOs;
-
-namespace Infrastructure.Data;
+﻿namespace Infrastructure.Data;
 public class StoreContextSeed
 {
     public static async Task SeedAsync(StoreContext storeContext, ILogger logger)
@@ -50,7 +48,7 @@ public class StoreContextSeed
         var entityData = await File.ReadAllTextAsync(entityPath);
         var entityRows = JsonSerializer.Deserialize<List<TEntity>>(entityData);
         entityRows.ForEach(async entityRow => await storeContext.AddAsync(entityRow));
-       
+
     }
 }
 

@@ -14,6 +14,18 @@ public static class StartUpExtensions
         return services;
     }
 
-    
+    public static IQueryable<TEntity> EvaluateSpecification<TEntity, Tobj>(
+           this IQueryable<TEntity> inputQuery,
+            Tobj specification,
+           Func<IQueryable<TEntity>, IQueryable<TEntity>> predicate)
+    {
+        if (specification is bool spec)
+        {
+            return spec == false ? inputQuery : predicate?.Invoke(inputQuery);
+        }
+        return specification is null ? inputQuery : predicate?.Invoke(inputQuery);
+    }
+
+
 }
 

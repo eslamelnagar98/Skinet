@@ -52,5 +52,16 @@ public static partial class Extension
         app.UseSwaggerUI();
         return app;
     }
+
+    public static IServiceCollection ConfigureCorsOrigins(this IServiceCollection services)
+    {
+        return services.AddCors(options =>
+         {
+             options.AddPolicy("CorsPolicy", policy =>
+             {
+                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+             });
+         });
+    }
 }
 
