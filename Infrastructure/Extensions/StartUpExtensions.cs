@@ -8,7 +8,7 @@ public static class StartUpExtensions
             option.UseSqlServer(connectionString)
                   .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name },
                    LogLevel.Information)
-                   .EnableSensitiveDataLogging();
+                  .EnableSensitiveDataLogging();
         });
 
         return services;
@@ -16,7 +16,7 @@ public static class StartUpExtensions
 
     public static IQueryable<TEntity> EvaluateSpecification<TEntity, Tobj>(
            this IQueryable<TEntity> inputQuery,
-            Tobj specification,
+           Tobj specification,
            Func<IQueryable<TEntity>, IQueryable<TEntity>> predicate)
     {
         if (specification is bool spec)
