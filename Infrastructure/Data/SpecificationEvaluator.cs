@@ -5,7 +5,6 @@ public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
                                                ISpecification<TEntity> specifcation)
     {
         var query = inputQuery;
-
         query = query.EvaluateSpecification(specifcation.Criteria, input =>
                                     input.Where(specifcation.Criteria))
                      .EvaluateSpecification(specifcation.OrderBy, input =>
@@ -14,7 +13,6 @@ public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
                                     input.OrderByDescending(specifcation.OrderByDescending))
                      .EvaluateSpecification(specifcation.IsPaginEnabled, input =>
                                             input.Skip(specifcation.Skip).Take(specifcation.Take));
-
 
         query = specifcation.Includes.Aggregate(query, (current, include) => current.Include(include));
         return query;
