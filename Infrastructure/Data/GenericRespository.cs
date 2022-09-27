@@ -18,22 +18,22 @@ public class GenericRespository<TEntity> : IGenericRepository<TEntity> where TEn
 
     public async Task<TEntity> GetEntityWithSpecification(ISpecification<TEntity> specification)
     {
-        return await ApplySpecification(specification).FirstOrDefaultAsync();
+        return await (await ApplySpecification(specification)).FirstOrDefaultAsync();
     }
 
     public async Task<IReadOnlyList<TEntity>> ListAsync(ISpecification<TEntity> specification)
     {
-        return await ApplySpecification(specification).ToListAsync();
+        return await (await ApplySpecification(specification)).ToListAsync();
     }
 
     public async Task<int> CountAsync(ISpecification<TEntity> specification)
     {
-        return await ApplySpecification(specification).CountAsync();
+        return await (await ApplySpecification(specification)).CountAsync();
     }
 
-    private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> specification)
+    private async Task<IQueryable<TEntity>> ApplySpecification(ISpecification<TEntity> specification)
     {
-        return SpecificationEvaluator<TEntity>.GetQuery(_storeContext.Set<TEntity>().AsQueryable(), specification);
+        return await SpecificationEvaluator<TEntity>.GetQuery(_storeContext.Set<TEntity>().AsQueryable(), specification);
     }
 
 

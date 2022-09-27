@@ -65,7 +65,9 @@ public class ProductsController : BaseApiController
         var listCount = data?.Count ?? 0;
         return new Pagination<ProductToReturnDto>
         {
-            PageIndex = productParams.PageIndex,
+            PageIndex = totalItems < (productParams.PageIndex - 1 * productParams.PageSize)
+                                    ? (totalItems / productParams.PageSize) + 1
+                                    : productParams.PageIndex,
             PageSize = productParams.PageSize <= listCount ? productParams.PageSize : listCount,
             Count = totalItems,
             Data = data

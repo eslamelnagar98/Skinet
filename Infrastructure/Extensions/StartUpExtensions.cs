@@ -21,7 +21,7 @@ public static class StartUpExtensions
     {
         if (specification is bool spec)
         {
-            return spec == false ? inputQuery : predicate?.Invoke(inputQuery);
+            return spec is false ? inputQuery : predicate?.Invoke(inputQuery);
         }
         return specification is null ? inputQuery : predicate?.Invoke(inputQuery);
     }
