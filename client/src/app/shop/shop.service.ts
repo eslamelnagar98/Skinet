@@ -5,7 +5,6 @@ import { IBrand } from '../shared/models/brands';
 import { IPagination } from '../shared/models/pagination';
 import { IType } from '../shared/models/ProductType';
 import { ShopParams } from '../shared/models/shopParams';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -14,22 +13,10 @@ export class ShopService {
   baseUrl = 'https://localhost:5001/api/';
   pageSize = 6;
   constructor(private http: HttpClient) { }
-
   getProducts(shopParams: ShopParams) {
-    let params = new HttpParams();
-
-    if (shopParams.brandId !== 0) {
-      params = params.append('brandId', shopParams.brandId.toString())
-    }
-
-    if (shopParams.typeId !== 0) {
-      params = params.append('typeId', shopParams.typeId.toString())
-    }
-
-    params = params.append('sort', shopParams.sort);
-    params = params.append('PageIndex', shopParams.pageNumber.toString());
-    params = params.append('PageSize', this.pageSize.toString());
-
+    shopParams.pageSize = this.pageSize;
+    let params = this.concatQueryParams(shopParams);
+    console.log(JSON.stringify(params));
     return this.http.get<IPagination>(`${this.baseUrl}products`, { observe: 'response', params })
       .pipe(
         map(response => {
@@ -44,5 +31,23 @@ export class ShopService {
   getTypes() {
     return this.http.get<IType[]>(`${this.baseUrl}products/types`);
   }
+  concatQueryParams(queryParams: ShopParams): HttpParams {
+    let params: HttpParams = new HttpParams();
+    Object.keys(queryParams).forEach(key => {
+      if (queryParams.hasOwnProperty(key) && queryParams[key]) {
+        const value = queryParams[key];
+        if (value !== 0) {
+          if (key === 'pageNumber') {
+            params = params.append('pageIndex', value.toString());
+          }
+          else {
+            params = params.append(key, value.toString());
+          }
+        }
+      }
+    });
+    return params
+  }
+
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IBrand } from '../shared/models/brands';
 import { IPagination } from '../shared/models/pagination';
 import { IProduct } from '../shared/models/Product';
@@ -12,6 +12,7 @@ import { ShopService } from './shop.service';
 })
 export class ShopComponent implements OnInit {
 
+  @ViewChild('search', { static: true }) SearchTerm: ElementRef
   products: Array<IProduct>;
   brands: Array<IBrand>;
   types: Array<IType>;
@@ -25,7 +26,6 @@ export class ShopComponent implements OnInit {
   constructor(private shopService: ShopService) { }
 
   ngOnInit() {
-    this.resetPageIndex();
     this.getProducts();
     this.getBrands();
     this.getTypes();
@@ -45,6 +45,7 @@ export class ShopComponent implements OnInit {
   }
 
   getBrands() {
+
     this.shopService.getBrands().subscribe({
       next: (response) => this.brands = [{ id: 0, name: 'All' }, ...response],
       error: (error) => console.error(error)
@@ -60,28 +61,45 @@ export class ShopComponent implements OnInit {
 
   onBrandSelected(brandId: number) {
     this.shopParams.brandId = brandId;
-    this.resetPageIndex();
+    this.resetPageNumber();
     this.getProducts();
   }
   onTypeSelected(typeId: number) {
     this.shopParams.typeId = typeId;
-    this.resetPageIndex();
+    this.resetPageNumber();
     this.getProducts();
   }
 
   onSortSelected(sort: string) {
     this.shopParams.sort = sort;
-    this.resetPageIndex();
+    this.resetPageNumber();
     this.getProducts();
   }
 
   onPageChanged(event: any) {
-    this.shopParams.pageNumber = event.page;
+    if (this.shopParams.pageNumber != event) {
+      this.shopParams.pageNumber = event;
+      this.getProducts();
+    }
+
+  }
+
+  onSearch() {
+    this.shopParams.search = this.SearchTerm.nativeElement.value;
+    this.resetPageNumber();
     this.getProducts();
   }
 
-  resetPageIndex() {
+  onReset() {
+    this.SearchTerm.nativeElement.value = '';
+    this.shopParams = new ShopParams();
+    this.getProducts();
+  }
+
+  resetPageNumber() {
     this.shopParams.pageNumber = 1;
   }
+
+
 
 }
