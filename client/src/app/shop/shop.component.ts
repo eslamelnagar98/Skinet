@@ -13,7 +13,7 @@ import { ShopService } from './shop.service';
 export class ShopComponent implements OnInit {
 
   @ViewChild('search', { static: true }) SearchTerm: ElementRef
-  products: Array<IProduct>;
+  products: Array<IProduct> = [];
   brands: Array<IBrand>;
   types: Array<IType>;
   shopParams = new ShopParams();
@@ -32,6 +32,7 @@ export class ShopComponent implements OnInit {
   }
 
   getProducts() {
+
     this.shopService.getProducts(this.shopParams).subscribe({
       next: (response: IPagination) => {
         this.products = response.data;
@@ -42,6 +43,7 @@ export class ShopComponent implements OnInit {
       error: (error) => console.error(error)
     }
     )
+
   }
 
   getBrands() {
@@ -50,6 +52,8 @@ export class ShopComponent implements OnInit {
       next: (response) => this.brands = [{ id: 0, name: 'All' }, ...response],
       error: (error) => console.error(error)
     })
+
+
   }
 
   getTypes() {

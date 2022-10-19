@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { IBrand } from '../shared/models/brands';
 import { IPagination } from '../shared/models/pagination';
+import { IProduct } from '../shared/models/Product';
 import { IType } from '../shared/models/ProductType';
 import { ShopParams } from '../shared/models/shopParams';
 @Injectable({
@@ -16,12 +17,15 @@ export class ShopService {
   getProducts(shopParams: ShopParams) {
     shopParams.pageSize = this.pageSize;
     let params = this.concatQueryParams(shopParams);
-    console.log(JSON.stringify(params));
     return this.http.get<IPagination>(`${this.baseUrl}products`, { observe: 'response', params })
       .pipe(
         map(response => {
           return response.body;
         }))
+  }
+
+  getProduct(productId: number) {
+    return this.http.get<IProduct>(`${this.baseUrl}products/${productId}`);
   }
 
   getBrands() {
@@ -31,6 +35,11 @@ export class ShopService {
   getTypes() {
     return this.http.get<IType[]>(`${this.baseUrl}products/types`);
   }
+
+
+
+
+
   concatQueryParams(queryParams: ShopParams): HttpParams {
     let params: HttpParams = new HttpParams();
     Object.keys(queryParams).forEach(key => {
