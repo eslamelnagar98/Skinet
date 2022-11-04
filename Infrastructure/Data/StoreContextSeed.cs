@@ -12,17 +12,17 @@ public class StoreContextSeed
             {
                 new ProductSeedDto
                 {
-                    IsEmpty=await storeContext.ProductBrands.CountAsync() == 0,
+                    IsEmpty=await _storeContext.ProductBrands.CountAsync() == 0,
                     ProductSeedMethod=async ()=> await AddskinetSeedData<ProductBrand>("brands.json")
                 },
                 new ProductSeedDto
                 {
-                    IsEmpty=await storeContext.ProductTypes.CountAsync() == 0,
+                    IsEmpty=await _storeContext.ProductTypes.CountAsync() == 0,
                     ProductSeedMethod=async ()=> await AddskinetSeedData<ProductType>("types.json")
                 },
                 new ProductSeedDto
                 {
-                    IsEmpty=await storeContext.Products.CountAsync() == 0,
+                    IsEmpty=await _storeContext.Products.CountAsync() == 0,
                     ProductSeedMethod=async ()=> await AddskinetSeedData<Product>("products.json")
                 },
             };
@@ -34,7 +34,7 @@ public class StoreContextSeed
                     await productSeet?.ProductSeedMethod?.Invoke();
                 }
             }
-            await storeContext.SaveChangesAsync();
+            await _storeContext.SaveChangesAsync();
         }
         catch (Exception exception)
         {
