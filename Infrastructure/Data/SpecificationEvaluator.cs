@@ -13,7 +13,7 @@ public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
                                     input.OrderByDescending(specifcation.OrderByDescending));
 
         var inputCount = await query.CountAsync();
-        if (inputCount > specifcation.Skip && specifcation.Skip != 0)
+        if (inputCount > specifcation.Skip)
         {
             query = query.EvaluateSpecification(specifcation.IsPaginEnabled, input =>
                                             input.Skip(specifcation.Skip)
