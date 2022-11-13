@@ -56,12 +56,12 @@ public static partial class Extension
     public static IServiceCollection ConfigureCorsOrigins(this IServiceCollection services)
     {
         return services.AddCors(options =>
-         {
-             options.AddPolicy("CorsPolicy", policy =>
-             {
-                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
-             });
-         });
+        {
+            options.AddPolicy("CorsPolicy", policy =>
+            {
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+            });
+        });
     }
 }
 

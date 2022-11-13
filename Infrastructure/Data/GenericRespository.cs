@@ -28,7 +28,10 @@ public class GenericRespository<TEntity> : IGenericRepository<TEntity> where TEn
 
     public async Task<int> CountAsync(ISpecification<TEntity> specification)
     {
-        return await (await ApplySpecification(specification)).CountAsync();
+        return await _storeContext.Set<TEntity>()
+            .Where(specification.Criteria)
+            .AsNoTracking()
+            .CountAsync();
     }
 
     private async Task<IQueryable<TEntity>> ApplySpecification(ISpecification<TEntity> specification)

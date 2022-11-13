@@ -1,31 +1,13 @@
 ﻿namespace Infrastructure.Data;
 public class StoreContextSeed
 {
-    private readonly StoreContext _storeContext;
+    private static StoreContext _storeContext;
     public static async Task SeedAsync(StoreContext storeContext, ILogger logger)
     {
-        _storeContext=storeContext;
-
+        _storeContext = storeContext;
         try
         {
-            var productSeedList = new List<ProductSeedDto>
-            {
-                new ProductSeedDto
-                {
-                    IsEmpty=await _storeContext.ProductBrands.CountAsync() == 0,
-                    ProductSeedMethod=async ()=> await AddskinetSeedData<ProductBrand>("brands.json")
-                },
-                new ProductSeedDto
-                {
-                    IsEmpty=await _storeContext.ProductTypes.CountAsync() == 0,
-                    ProductSeedMethod=async ()=> await AddskinetSeedData<ProductType>("types.json")
-                },
-                new ProductSeedDto
-                {
-                    IsEmpty=await _storeContext.Products.CountAsync() == 0,
-                    ProductSeedMethod=async ()=> await AddskinetSeedData<Product>("products.json")
-                },
-            };
+            var productSeedList = await GetAllProductSeedDtoList();
 
             foreach (var productSeet in productSeedList)
             {
@@ -51,6 +33,28 @@ public class StoreContextSeed
         var entityRows = JsonSerializer.Deserialize<List<TEntity>>(entityData);
         entityRows.ForEach(async entityRow => await _storeContext.AddAsync(entityRow));
 
+    }
+
+    private static async Task<IReadOnlyList<ProductSeedDto>> GetAllProductSeedDtoList()
+    {
+        return new List<ProductSeedDto>
+            {
+             new ProductSeedDto
+                {
+                    IsEmpty=await _storeContext.Products.CountAsync() == 0,
+                    ProductSeedMethod=async ()=> await AddskinetSeedData<Product>("products.json")
+                },
+                new ProductSeedDto
+                {
+                    IsEmpty=await _storeContext.ProductBrands.CountAsync() == 0,
+                    ProductSeedMethod=async ()=> await AddskinetSeedData<ProductBrand>("brands.json")
+                },
+                new ProductSeedDto
+                {
+                    IsEmpty=await _storeContext.ProductTypes.CountAsync() == 0,
+                    ProductSeedMethod=async ()=> await AddskinetSeedData<ProductType>("types.json")
+                }
+            };
     }
 }
 

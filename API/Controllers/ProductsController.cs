@@ -6,10 +6,11 @@ public class ProductsController : BaseApiController
     private readonly IGenericRepository<ProductType> _productType;
     private readonly IMapper _mapper;
 
-    public ProductsController(IGenericRepository<Product> productRepository,
-                              IGenericRepository<ProductBrand> productBrand,
-                              IGenericRepository<ProductType> productType,
-                              IMapper mapper)
+    public ProductsController(
+        IGenericRepository<Product> productRepository,
+        IGenericRepository<ProductBrand> productBrand,
+        IGenericRepository<ProductType> productType,
+        IMapper mapper)
     {
         _productRepository = Guard.Against.Null(productRepository, nameof(productRepository));
         _productBrand = Guard.Against.Null(productBrand, nameof(productBrand));
@@ -39,6 +40,7 @@ public class ProductsController : BaseApiController
     [HttpGet("types")]
     public async Task<ActionResult<List<Product>>> GetProductsTypes()
     {
+
         var products = await _productType.ListAllAsync();
         return Ok(products);
     }
