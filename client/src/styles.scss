@@ -9,6 +9,7 @@
 @import "../node_modules/bootswatch/dist/flatly/bootstrap.min.css";
 @import "../node_modules/font-awesome/css/font-awesome.min.css";
 @import "../node_modules/ngx-toastr/toastr.css";
+@import "../node_modules/ngx-spinner/animations/ball-circus";
 
 .xng-breadcrumb-root {
   padding: 8px 16px;
@@ -18,7 +19,7 @@
 
 label.xng-breadcrumb-trail {
   margin-bottom: 0;
-  color: orange;
+  color: #18bc95;
 }
 
 .xng-breadcrumb-separator {

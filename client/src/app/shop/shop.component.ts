@@ -12,7 +12,7 @@ import { ShopService } from './shop.service';
 })
 export class ShopComponent implements OnInit {
 
-  @ViewChild('search', { static: true }) SearchTerm: ElementRef
+  @ViewChild('search', { static: false }) SearchTerm: ElementRef
   products: Array<IProduct> = [];
   brands: Array<IBrand>;
   types: Array<IType>;
@@ -32,7 +32,6 @@ export class ShopComponent implements OnInit {
   }
 
   getProducts() {
-
     this.shopService.getProducts(this.shopParams).subscribe({
       next: (response: IPagination) => {
         this.products = response.data;
