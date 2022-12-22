@@ -1,6 +1,7 @@
 ﻿namespace Core.Specifications;
 public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product>
 {
+    private Expression<Func<Product, object>> parameters;
     public ProductsWithTypesAndBrandsSpecification(int id)
         : base(product => product.Id == id)
 
@@ -15,6 +16,7 @@ public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product
                                                                   .Contains(productParams.Search)) &&
             ((!productParams.BrandId.HasValue) || product.ProductBrandId == productParams.BrandId) &&
             ((!productParams.TypeId.HasValue) || product.ProductTypeId == productParams.TypeId))
+
     {
         AddInclude(product => product.ProductType);
         AddInclude(product => product.ProductBrand);
@@ -28,7 +30,6 @@ public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product
         {
             return;
         }
-
         switch (sort)
         {
             case "priceAsc":

@@ -14,6 +14,15 @@ public static class StartUpExtensions
         return services;
     }
 
+    public static IServiceCollection AddRedisConnection(this IServiceCollection services, string connectionString)
+    {
+        return services.AddSingleton<IConnectionMultiplexer>(connection =>
+         {
+             var configuration = ConfigurationOptions.Parse(connectionString, true);
+             return ConnectionMultiplexer.Connect(configuration);
+         });
+    }
+
     public static IQueryable<TEntity> EvaluateSpecification<TEntity, Tobj>(
            this IQueryable<TEntity> inputQuery,
            Tobj specification,
@@ -21,7 +30,7 @@ public static class StartUpExtensions
     {
         if (specification is bool spec)
         {
-            return spec == false ? inputQuery : predicate?.Invoke(inputQuery);
+            return spec is false ? inputQuery : predicate?.Invoke(inputQuery);
         }
         return specification is null ? inputQuery : predicate?.Invoke(inputQuery);
     }

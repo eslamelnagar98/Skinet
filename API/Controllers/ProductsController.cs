@@ -6,14 +6,15 @@ public class ProductsController : BaseApiController
     private readonly IGenericRepository<ProductType> _productType;
     private readonly IMapper _mapper;
 
-    public ProductsController(IGenericRepository<Product> productRepository,
-                              IGenericRepository<ProductBrand> productBrand,
-                              IGenericRepository<ProductType> productType,
-                              IMapper mapper)
+    public ProductsController(
+        IGenericRepository<Product> productRepository,
+        IGenericRepository<ProductBrand> productBrand,
+        IGenericRepository<ProductType> productType,
+        IMapper mapper)
     {
         _productRepository = Guard.Against.Null(productRepository, nameof(productRepository));
         _productBrand = Guard.Against.Null(productBrand, nameof(productBrand));
-        _productType = Guard.Against.Null(productType, nameof(productType));
+        _productType = Guard.Against.Null(productType, nameof(productType)); 
         _mapper = Guard.Against.Null(mapper, nameof(mapper));
     }
 
@@ -39,6 +40,7 @@ public class ProductsController : BaseApiController
     [HttpGet("types")]
     public async Task<ActionResult<List<Product>>> GetProductsTypes()
     {
+
         var products = await _productType.ListAllAsync();
         return Ok(products);
     }
@@ -65,11 +67,15 @@ public class ProductsController : BaseApiController
         var listCount = data?.Count ?? 0;
         return new Pagination<ProductToReturnDto>
         {
-            PageIndex = productParams.PageIndex,
+            PageIndex =  productParams.PageIndex,
             PageSize = productParams.PageSize <= listCount ? productParams.PageSize : listCount,
             Count = totalItems,
             Data = data
         };
     }
 }
+
+//totalItems<(productParams.PageIndex - 1 * productParams.PageSize)
+//                                    ? (totalItems / productParams.PageSize) + 1
+//                                    :
 
