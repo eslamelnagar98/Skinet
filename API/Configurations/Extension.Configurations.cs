@@ -10,7 +10,8 @@ public static partial class Extension
                 var errors = actionContext.ModelState
                                         .Where(error => error.Value.Errors.Any())
                                         .SelectMany(x => x.Value.Errors)
-                                        .Select(x => x.ErrorMessage).ToList();
+                                        .Select(x => x.ErrorMessage)
+                                        .ToList();
 
                 var errorResponse = new ApiValidationErrorResponse
                 {
@@ -26,6 +27,7 @@ public static partial class Extension
     public static IServiceCollection AddCommonServices(this IServiceCollection services)
     {
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IBasketRepository, BasketRepository>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRespository<>));
         return services;
     }

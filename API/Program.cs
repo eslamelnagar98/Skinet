@@ -1,10 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var dbConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCommonServices()
-                .AddStroreDbContext(connectionString)
+                .AddStroreDbContext(dbConnectionString)
+                .AddRedisConnection(redisConnectionString)
                 .AddAutoMapper(typeof(MappingProfiles))
                 .ConfigureBadRequestBehaviour()
                 .ConfigureCorsOrigins();
