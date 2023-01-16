@@ -1,7 +1,6 @@
 ﻿namespace Core.Specifications;
 public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product>
 {
-    private Expression<Func<Product, object>> parameters;
     public ProductsWithTypesAndBrandsSpecification(int id)
         : base(product => product.Id == id)
 
@@ -21,30 +20,23 @@ public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product
         AddInclude(product => product.ProductType);
         AddInclude(product => product.ProductBrand);
         ApplyPaging(productParams.PageSize * (productParams.PageIndex - 1), productParams.PageSize);
-        HandleSortCriteria(productParams.Sort);
+        HandleSortCriteria(productParams.Sort)?.Invoke();
     }
 
-    private void HandleSortCriteria(string sort)
+    private Action HandleSortCriteria(string sort)
     {
         if (string.IsNullOrEmpty(sort))
         {
-            return;
+            return null;
         }
-        switch (sort)
+
+        return sort switch
         {
-            case "priceAsc":
-                AddOrderBy(product => product.Price);
-                break;
+            "priceAsc" => () => AddOrderBy(product => product.Price),
+            "priceDesc" => () => AddOrderByDescending(product => product.Price),
+            _ => () => AddOrderBy(product => product.Name)
+        };
 
-            case "priceDesc":
-                AddOrderByDescending(product => product.Price);
-                break;
-
-            default:
-                AddOrderBy(product => product.Name);
-                break;
-
-        }
     }
 }
 

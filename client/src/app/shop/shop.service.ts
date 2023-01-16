@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Utilities } from '../shared/Helpers/Utilities';
 import { IBrand } from '../shared/models/brands';
 import { IPagination } from '../shared/models/pagination';
 import { IProduct } from '../shared/models/Product';
@@ -17,7 +18,8 @@ export class ShopService {
   constructor(private http: HttpClient) { }
   getProducts(shopParams: ShopParams) {
     shopParams.pageSize = this.pageSize;
-    let params = this.concatQueryParams(shopParams);
+    let utilities = new Utilities();
+    let params = utilities.concatQueryParams(shopParams);
     return this.http.get<IPagination>(`${this.baseUrl}products`, { observe: 'response', params })
       .pipe(
         map(response => {
@@ -36,28 +38,5 @@ export class ShopService {
   getTypes() {
     return this.http.get<IType[]>(`${this.baseUrl}products/types`);
   }
-
-
-
-
-
-  concatQueryParams(queryParams: ShopParams): HttpParams {
-    let params: HttpParams = new HttpParams();
-    Object.keys(queryParams).forEach(key => {
-      if (queryParams.hasOwnProperty(key) && queryParams[key]) {
-        const value = queryParams[key];
-        if (value !== 0) {
-          if (key === 'pageNumber') {
-            params = params.append('pageIndex', value.toString());
-          }
-          else {
-            params = params.append(key, value.toString());
-          }
-        }
-      }
-    });
-    return params
-  }
-
 
 }

@@ -1,4 +1,6 @@
-﻿namespace API.Configurations;
+﻿using API.Helpers.Constans;
+
+namespace API.Configurations;
 public static partial class Extension
 {
     public static IServiceCollection ConfigureBadRequestBehaviour(this IServiceCollection services)
@@ -61,7 +63,9 @@ public static partial class Extension
         {
             options.AddPolicy("CorsPolicy", policy =>
             {
-                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                policy.AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins($"{ClientSide.Ip}:{ClientSide.Port}");
             });
         });
     }

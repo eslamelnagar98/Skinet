@@ -13,6 +13,14 @@ const routes: Routes = [
     path: 'shop', loadChildren: () => import('./shop/shop.module').then(mod => mod.ShopModule),
     data: { breadCrumb: 'Shop' }
   },
+  {
+    path: 'basket', loadChildren: () => import('./basket/basket.module').then(mod => mod.BasketModule),
+    data: { breadCrumb: 'basket' }
+  },
+  {
+    path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then(mod => mod.CheckoutModule),
+    data: { breadCrumb: 'checkout' }
+  },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
 
