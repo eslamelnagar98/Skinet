@@ -1,6 +1,4 @@
-﻿using API.Helpers.Constans;
-
-namespace API.Configurations;
+﻿namespace API.Configurations;
 public static partial class Extension
 {
     public static IServiceCollection ConfigureBadRequestBehaviour(this IServiceCollection services)
@@ -28,6 +26,7 @@ public static partial class Extension
 
     public static IServiceCollection AddCommonServices(this IServiceCollection services)
     {
+        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IBasketRepository, BasketRepository>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRespository<>));
@@ -36,19 +35,27 @@ public static partial class Extension
 
     public static async Task ApplyMigrations(this IServiceProvider services)
     {
-        await using var scoped = services.CreateAsyncScope();
-        using var storeContext = scoped.ServiceProvider.GetRequiredService<StoreContext>();
         var logger = services.GetRequiredService<ILogger<StoreContextSeed>>();
+        await using var scoped = services.CreateAsyncScope();
+        var serviceProvider = scoped.ServiceProvider;
         try
         {
+            using var storeContext = serviceProvider.GetRequiredService<StoreContext>();
             await storeContext.Database.MigrateAsync();
             await StoreContextSeed.SeedAsync(storeContext, logger);
+
+            var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+            var identityContext = serviceProvider.GetRequiredService<AppIdentityDbContext>();
+            await identityContext.Database.MigrateAsync();
+            await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
         }
         catch (Exception exception)
         {
             logger.LogError("An Error Occured During Database Migration ,{exception}", exception);
+            throw;
         }
     }
+
 
     public static WebApplication UseSwaggerDocumentation(this WebApplication app)
     {
@@ -71,3 +78,25 @@ public static partial class Extension
     }
 }
 
+
+//  public static async Task ApplyMigrations2<TDbContext, TDbContextSeed>(this IServiceProvider services)
+//where TDbContext : DbContext
+//where TDbContextSeed : class
+//  {
+//      await using var scoped = services.CreateAsyncScope();
+//      using var dbContext = scoped.ServiceProvider.GetRequiredService<TDbContext>();
+//      var logger = services.GetRequiredService<ILogger<TDbContextSeed>>();
+//      try
+//      {
+//          await dbContext.Database.MigrateAsync();
+//          var method = typeof(TDbContextSeed).GetMethod(nameof(StoreContextSeed.SeedAsync),
+//              BindingFlags.Public | BindingFlags.Static,
+//              new Type[] { typeof(TDbContext), typeof(ILogger<TDbContextSeed>) }
+//          );
+//          await (Task)method.Invoke(null, new object[] { dbContext, logger });
+//      }
+//      catch (Exception exception)
+//      {
+//          logger.LogError("An Error Occured During Database Migration ,{exception}", exception);
+//      }
+//  }

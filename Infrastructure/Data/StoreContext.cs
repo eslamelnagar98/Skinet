@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Infrastructure.Data;
+﻿namespace Infrastructure.Data;
 public class StoreContext : DbContext
 {
     public StoreContext(DbContextOptions<StoreContext> options)

@@ -1,9 +1,11 @@
 ﻿namespace Infrastructure.Extensions;
 public static class StartUpExtensions
 {
-    public static IServiceCollection AddStroreDbContext(this IServiceCollection services, string connectionString)
+
+    public static IServiceCollection AddDbContext<TDbContext>(this IServiceCollection services, string connectionString)
+        where TDbContext : DbContext
     {
-        services.AddDbContext<StoreContext>(option =>
+        services.AddDbContext<TDbContext>(option =>
         {
             option.UseSqlServer(connectionString)
                   .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name },
@@ -13,7 +15,6 @@ public static class StartUpExtensions
 
         return services;
     }
-
     public static IServiceCollection AddRedisConnection(this IServiceCollection services, string connectionString)
     {
         return services.AddSingleton<IConnectionMultiplexer>(connection =>

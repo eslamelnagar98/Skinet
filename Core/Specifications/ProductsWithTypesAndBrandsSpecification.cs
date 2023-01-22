@@ -25,11 +25,8 @@ public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product
 
     private Action HandleSortCriteria(string sort)
     {
-        if (string.IsNullOrEmpty(sort))
-        {
-            return null;
-        }
-
+        if (string.IsNullOrEmpty(sort)) return null;
+        
         return sort switch
         {
             "priceAsc" => () => AddOrderBy(product => product.Price),

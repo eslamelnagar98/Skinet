@@ -5,3 +5,6 @@ global using System.Threading.Tasks;
 global using Ardalis.GuardClauses;
 global using Core.Entities;
 global using Core.Specifications;
+global using Microsoft.AspNetCore.Identity;
+global using System.ComponentModel.DataAnnotations;
+

@@ -8,6 +8,12 @@ public class BuggyController : BaseApiController
         _storeContext = storeContext;
     }
 
+    [HttpGet("testauth"), Authorize]
+    public ActionResult<string> GetSecretText()
+    {
+        return "secret Stuff";
+    }
+
     [HttpGet("notfound")]
     public ActionResult GetNotFoundRequest()
     {
@@ -25,13 +31,7 @@ public class BuggyController : BaseApiController
     {
         var thing = _storeContext.Products.Find(42);
         var thingToReturn = thing.ToString();
-        //try
-        //{
-        //}
-        //catch
-        //{
-        //    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(StatusCodes.Status500InternalServerError));
-        //}
+
         return Ok();
     }
 

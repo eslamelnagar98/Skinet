@@ -21,7 +21,7 @@ public class StoreContextSeed
         catch (Exception exception)
         {
             logger.LogError("Something Wrong Happen , {exp}", exception);
-
+            throw;
         }
     }
 

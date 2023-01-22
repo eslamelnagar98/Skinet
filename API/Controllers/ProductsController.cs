@@ -14,7 +14,7 @@ public class ProductsController : BaseApiController
     {
         _productRepository = Guard.Against.Null(productRepository, nameof(productRepository));
         _productBrand = Guard.Against.Null(productBrand, nameof(productBrand));
-        _productType = Guard.Against.Null(productType, nameof(productType)); 
+        _productType = Guard.Against.Null(productType, nameof(productType));
         _mapper = Guard.Against.Null(mapper, nameof(mapper));
     }
 
@@ -67,7 +67,7 @@ public class ProductsController : BaseApiController
         var listCount = data?.Count ?? 0;
         return new Pagination<ProductToReturnDto>
         {
-            PageIndex =  productParams.PageIndex,
+            PageIndex = productParams.PageIndex,
             PageSize = productParams.PageSize <= listCount ? productParams.PageSize : listCount,
             Count = totalItems,
             Data = data

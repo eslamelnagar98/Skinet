@@ -14,6 +14,9 @@ public class MappingProfiles : Profile
                 dest => dest.PictureUrl,
                 opt => opt.MapFrom<ProductUrlResolver>());
 
+        CreateMap<Address, AddressDto>()
+            .ReverseMap();
+
     }
 }
 
