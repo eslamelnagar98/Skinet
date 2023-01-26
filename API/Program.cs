@@ -15,7 +15,8 @@ builder.Services.AddFluentValidationAutoValidation()
     .AddJwtBearerAuthentication(builder.Configuration)
     .AddAutoMapper(typeof(MappingProfiles))
     .ConfigureBadRequestBehaviour()
-    .ConfigureCorsOrigins();
+    .ConfigureCorsOrigins()
+    .AddSwaggerAuthorizationSecurity();
 var app = builder.Build();
 try
 {

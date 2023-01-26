@@ -1,8 +1,37 @@
-﻿namespace API.Configurations;
+﻿using Microsoft.OpenApi.Models;
+
+namespace API.Configurations;
 public static partial class Extension
 {
+    public static IServiceCollection AddSwaggerAuthorizationSecurity(this IServiceCollection service)
+    {
+        service.AddSwaggerGen(option =>
+        {
+            option.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+
+            var securitySchema = new OpenApiSecurityScheme
+            {
+                Description = "JWT Auth Bearer Scheme",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            };
+
+            option.AddSecurityDefinition("Bearer", securitySchema);
+            var securityRequirement = new OpenApiSecurityRequirement { { securitySchema, new[] { "Bearer" } } };
+            option.AddSecurityRequirement(securityRequirement);
+        });
+        return service;
+    }
     public static IServiceCollection ConfigureBadRequestBehaviour(this IServiceCollection services)
     {
+
         services.Configure<ApiBehaviorOptions>(options =>
         {
             options.InvalidModelStateResponseFactory = actionContext =>
@@ -19,6 +48,7 @@ public static partial class Extension
                 };
                 return new BadRequestObjectResult(errorResponse);
             };
+
         });
 
         return services;
