@@ -13,7 +13,7 @@ namespace Infrastructure.Services
 
         public TokenService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            _configuration = configuration ?? Guard.Against.Null(configuration, nameof(_configuration));
             _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:Key"]));
         }
 

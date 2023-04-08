@@ -24,47 +24,15 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    // const routeParam = +this.activatedRoute.snapshot.paramMap.get('id');
-    // this.product = await lastValueFrom(this.shopService.getProduct(routeParam));
     await this.loadProduct();
     this.updateBasketItemQuantity();
-    // this.loadProduct2()
-    //   .then(_ => { this.updateBasketItemQuantity() })
-    //   .catch((error) => console.error(error));
-
   }
 
   async loadProduct() {
     const routeParam = +this.activatedRoute.snapshot.paramMap.get('id');
     this.product = await lastValueFrom(this.shopService.getProduct(routeParam));
     this.breadCrumbService.set('@ProductDetails', this.product.name)
-    // this.shopService.getProduct(routeParam).subscribe({
-    //   next: (product: IProduct) => {
-    //     console.log(product.id);
-    //     this.product = product
-    //     this.breadCrumbService.set('@ProductDetails', product.name)
-    //   },
-    //   error: (error) => console.error(error),
-    //   complete: () => this.updateBasketItemQuantity()
-    // });
   }
-
-  // loadProduct2() {
-  //   return new Promise((resolve, reject) => {
-  //     const routeParam = +this.activatedRoute.snapshot.paramMap.get('id');
-  //     this.shopService.getProduct(routeParam).subscribe({
-  //       next: (product: IProduct) => {
-  //         console.log(product.id);
-  //         this.product = product
-  //         this.breadCrumbService.set('@ProductDetails', product.name)
-  //         resolve(product);
-  //       },
-  //       error: (error) => {
-  //         reject(error)
-  //       }
-  //     });
-  //   })
-  // }
 
   addItemToBasket() {
     console.log(`Product price ${this.product.price} :: Quantity ${this.quantity}`);
