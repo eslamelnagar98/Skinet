@@ -1,12 +1,14 @@
 ﻿namespace API.Configurations;
 public partial class Extension
 {
-    public static string NullOrEmptyProduct(this IGuardClause guard,Product product , IConfiguration configuration)
+    public static string NullOrEmptyObject<TEntity>(this IGuardClause guard, TEntity entity, IConfiguration configuration)
+        where TEntity : class
     {
-        if(string.IsNullOrEmpty(product.PictureUrl))
+        dynamic dynamicEntity = entity;
+        if (string.IsNullOrEmpty(dynamicEntity.PictureUrl))
             return null;
-        var apiUrl= configuration.GetValue<string>("ApiUrl");
-        return $"{apiUrl}{product.PictureUrl}"; 
+        var apiUrl = configuration.GetValue<string>("ApiUrl");
+        return $"{apiUrl}{dynamicEntity.PictureUrl}";
     }
 }
 

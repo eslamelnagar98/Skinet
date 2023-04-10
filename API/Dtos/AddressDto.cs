@@ -35,5 +35,18 @@ public class AddressDto
         };
     }
 
+    public static explicit operator Core.Entities.OrderAggregate.Address(AddressDto addressDto)
+    {
+        return new()
+        {
+            FirstName = addressDto.FirstName,
+            LastName = addressDto.LastName,
+            Street = addressDto.Street,
+            City = addressDto.City,
+            State = addressDto.State,
+            ZipCode = addressDto.ZipCode,
+        };
+    }
+
 
 }

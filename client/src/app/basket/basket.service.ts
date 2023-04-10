@@ -86,7 +86,6 @@ export class BasketService {
   }
 
   getCurrentBasketValue() {
-    console.log(`Basket Value ${JSON.stringify(this.basketSource.value)}`);
     return this.basketSource.value;
   }
 
@@ -120,7 +119,6 @@ export class BasketService {
     if (index === -1) {
       itemToAdd.quantity = quantity;
       basketItems.push(itemToAdd);
-      console.log(basketItems);
       return basketItems;
     }
     basketItems[index].quantity += quantity;

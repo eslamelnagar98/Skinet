@@ -10,7 +10,7 @@ public class AppIdentityDbContextSeed
             DisplayName = "Islam Elnagar",
             Email = "IslamElnagar@gmail.com",
             UserName = "IslamElnagar@gmail.com",
-            Address = new Address
+            Address = new Core.Entities.Identity.Address
             {
                 FirstName = "Islam",
                 LastName = "Elnagar",

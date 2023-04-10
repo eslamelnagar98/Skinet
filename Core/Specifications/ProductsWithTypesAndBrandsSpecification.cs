@@ -9,12 +9,7 @@ public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product
         AddInclude(product => product.ProductBrand);
     }
     public ProductsWithTypesAndBrandsSpecification(ProductSpecificationParams productParams)
-        : base(product =>
-            (string.IsNullOrEmpty(productParams.Search) || product.Name
-                                                                  .ToLower()
-                                                                  .Contains(productParams.Search)) &&
-            ((!productParams.BrandId.HasValue) || product.ProductBrandId == productParams.BrandId) &&
-            ((!productParams.TypeId.HasValue) || product.ProductTypeId == productParams.TypeId))
+        : base(ProductCriteria.Expression(productParams))
 
     {
         AddInclude(product => product.ProductType);
@@ -26,7 +21,7 @@ public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product
     private Action HandleSortCriteria(string sort)
     {
         if (string.IsNullOrEmpty(sort)) return null;
-        
+
         return sort switch
         {
             "priceAsc" => () => AddOrderBy(product => product.Price),

@@ -53,6 +53,11 @@ public class StoreContextSeed
                 {
                     IsEmpty=await _storeContext.ProductTypes.CountAsync() == 0,
                     ProductSeedMethod=async ()=> await AddskinetSeedData<ProductType>("types.json")
+                },
+                new ProductSeedDto
+                {
+                    IsEmpty=await _storeContext.DeliveryMethods.CountAsync() == 0,
+                    ProductSeedMethod=async ()=> await AddskinetSeedData<DeliveryMethod>("delivery.json")
                 }
             };
     }

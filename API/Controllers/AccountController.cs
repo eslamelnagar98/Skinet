@@ -6,8 +6,7 @@ public class AccountController : BaseApiController
     private readonly ITokenService _tokenService;
     public AccountController(UserManager<AppUser> userManager,
                              SignInManager<AppUser> signInManager,
-                             ITokenService tokenService,
-                             IMapper mapper)
+                             ITokenService tokenService)
     {
         _userManager = Guard.Against.Null(userManager, nameof(userManager));
         _signInManager = Guard.Against.Null(signInManager, nameof(signInManager));

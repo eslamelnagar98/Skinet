@@ -9,7 +9,7 @@ public class ProductUrlResolver : IValueResolver<Product, ProductToReturnDto, st
     }
     public string Resolve(Product product, ProductToReturnDto productToReturnDto, string destMember, ResolutionContext context)
     {
-        return Guard.Against.NullOrEmptyProduct(product, _configuration);
+        return Guard.Against.NullOrEmptyObject(product, _configuration);
     }
 }
 

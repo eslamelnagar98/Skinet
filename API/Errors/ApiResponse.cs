@@ -11,7 +11,6 @@ public class ApiResponse
 
     private string GetDefaultMessageForStatusCode(int statusCode)
     {
-
         return statusCode switch
         {
             400 => "A bad request, you have made",

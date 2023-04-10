@@ -1,8 +1,10 @@
-﻿namespace Infrastructure.Data;
-public class GenericRespository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Query;
+namespace Infrastructure.Data;
+public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
 {
     private readonly StoreContext _storeContext;
-    public GenericRespository(StoreContext storeContext)
+    public GenericRepository(StoreContext storeContext)
     {
         _storeContext = Guard.Against.Null(storeContext, nameof(storeContext));
     }
@@ -32,6 +34,22 @@ public class GenericRespository<TEntity> : IGenericRepository<TEntity> where TEn
             .Where(specification.Criteria)
             .AsNoTracking()
             .CountAsync();
+    }
+
+    public async Task AddAsync(TEntity entity)
+    {
+        await _storeContext.Set<TEntity>().AddAsync(entity);
+    }
+
+    public async Task UpdateAsync(Expression<Func<TEntity, bool>> predicate,
+                             Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls)
+    {
+        await _storeContext.Set<TEntity>().Where(predicate).ExecuteUpdateAsync(setPropertyCalls);
+    }
+
+    public async Task DeleteAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        await _storeContext.Set<TEntity>().Where(predicate).ExecuteDeleteAsync();
     }
 
     private async Task<IQueryable<TEntity>> ApplySpecification(ISpecification<TEntity> specification)
