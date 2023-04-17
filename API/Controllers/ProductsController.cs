@@ -4,16 +4,16 @@ public class ProductsController : BaseApiController
     private readonly IGenericRepository<Product> _productRepository;
     private readonly IGenericRepository<ProductBrand> _productBrand;
     private readonly IGenericRepository<ProductType> _productType;
-    private readonly IMapper _mapper;
+    private readonly MapsterMapper.IMapper _mapster;
     public ProductsController(IGenericRepository<Product> productRepository,
                               IGenericRepository<ProductBrand> productBrand,
                               IGenericRepository<ProductType> productType,
-                              IMapper mapper)
+                              MapsterMapper.IMapper mapster)
     {
         _productRepository = Guard.Against.Null(productRepository, nameof(productRepository));
         _productBrand = Guard.Against.Null(productBrand, nameof(productBrand));
         _productType = Guard.Against.Null(productType, nameof(productType));
-        _mapper = Guard.Against.Null(mapper, nameof(mapper));
+        _mapster = Guard.Against.Null(mapster, nameof(mapster));
     }
 
     [HttpGet]
@@ -23,7 +23,7 @@ public class ProductsController : BaseApiController
         var countSpecification = new ProductWithFilterForCountSpecification(productParams);
         var totalItems = await _productRepository.CountAsync(countSpecification);
         var products = await _productRepository.ListAsync(specification);
-        var productsToReturn = _mapper.Map<IReadOnlyList<ProductToReturnDto>>(products);
+        var productsToReturn = _mapster.Map<IReadOnlyList<ProductToReturnDto>>(products);
         var paginationToReturn = GeneratePagination(productParams, totalItems, productsToReturn);
         return Ok(paginationToReturn);
     }
@@ -54,7 +54,7 @@ public class ProductsController : BaseApiController
         {
             return NotFound(new ApiResponse(404));
         }
-        var productToReturn = _mapper.Map<ProductToReturnDto>(product);
+        var productToReturn = _mapster.Map<ProductToReturnDto>(product);
         return Ok(productToReturn);
     }
 

@@ -1,5 +1,4 @@
-﻿using Core.Entities.OrderAggregate;
-using Address = Core.Entities.OrderAggregate.Address;
+﻿using Address = Core.Entities.OrderAggregate.Address;
 namespace API.Dtos;
 public class OrderToReturnDto
 {

@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Mapster;
+using MapsterMapper;
+using Microsoft.OpenApi.Models;
 
 namespace API.Configurations;
 public static partial class Extension
@@ -108,27 +110,13 @@ public static partial class Extension
             });
         });
     }
+
+    public static IServiceCollection AddMapster(this IServiceCollection services, IConfiguration configuration)
+    {
+        var config = TypeAdapterConfig.GlobalSettings;
+        config.Apply(new MapsterProfile(configuration));
+        services.AddSingleton(config);
+        services.AddScoped<MapsterMapper.IMapper, ServiceMapper>();
+        return services;
+    }
 }
-
-
-//  public static async Task ApplyMigrations2<TDbContext, TDbContextSeed>(this IServiceProvider services)
-//where TDbContext : DbContext
-//where TDbContextSeed : class
-//  {
-//      await using var scoped = services.CreateAsyncScope();
-//      using var dbContext = scoped.ServiceProvider.GetRequiredService<TDbContext>();
-//      var logger = services.GetRequiredService<ILogger<TDbContextSeed>>();
-//      try
-//      {
-//          await dbContext.Database.MigrateAsync();
-//          var method = typeof(TDbContextSeed).GetMethod(nameof(StoreContextSeed.SeedAsync),
-//              BindingFlags.Public | BindingFlags.Static,
-//              new Type[] { typeof(TDbContext), typeof(ILogger<TDbContextSeed>) }
-//          );
-//          await (Task)method.Invoke(null, new object[] { dbContext, logger });
-//      }
-//      catch (Exception exception)
-//      {
-//          logger.LogError("An Error Occured During Database Migration ,{exception}", exception);
-//      }
-//  }

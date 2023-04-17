@@ -6,18 +6,18 @@ namespace API.Controllers;
 public class OrdersController : BaseApiController
 {
     private readonly IOrderService _orderService;
-    private readonly IMapper _mapper;
+    private readonly MapsterMapper.IMapper _mapster;
 
-    public OrdersController(IOrderService orderService, IMapper mapper)
+    public OrdersController(IOrderService orderService, MapsterMapper.IMapper mapster)
     {
         _orderService = Guard.Against.Null(orderService, nameof(orderService));
-        _mapper = Guard.Against.Null(mapper, nameof(mapper));
+        _mapster = Guard.Against.Null(mapster, nameof(mapster));
     }
     [HttpPost]
     public async Task<ActionResult<Order>> CreateOrder(OrderDto orderDto)
     {
         var email = HttpContext.User.RetrieveEmailFromPrincipal();
-        var address = (Address)orderDto.ShipToAddress;
+        var address = _mapster.Map<Address>(orderDto.ShipToAddress);
         var order = await _orderService.CreateOrderAsync(email, orderDto.DeliveryMethodId, orderDto.BasketId, address);
         if (order is null)
         {
@@ -32,7 +32,7 @@ public class OrdersController : BaseApiController
     {
         var email = HttpContext.User.RetrieveEmailFromPrincipal();
         var orders = await _orderService.GetOrdersForUserAsync(email);
-        var orderToReturn = _mapper.Map<IReadOnlyList<OrderToReturnDto>>(orders);
+        var orderToReturn = _mapster.Map<IReadOnlyList<OrderToReturnDto>>(orders);
         return Ok(orderToReturn);
     }
 
@@ -45,7 +45,7 @@ public class OrdersController : BaseApiController
         {
             return NotFound(new ApiResponse(404));
         }
-        var orderToReturn = _mapper.Map<OrderToReturnDto>(order);
+        var orderToReturn = _mapster.Map<OrderToReturnDto>(order);
         return Ok(orderToReturn);
     }
 

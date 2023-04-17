@@ -1,4 +1,5 @@
-﻿using Core.Entities.OrderAggregate;
+﻿using AutoMapper;
+using Core.Entities.OrderAggregate;
 namespace API.Helpers;
 public class OrderItemUrlResolver: IValueResolver<OrderItem, OrderItemDto, string>
 {
@@ -13,4 +14,5 @@ public class OrderItemUrlResolver: IValueResolver<OrderItem, OrderItemDto, strin
         return Guard.Against.NullOrEmptyObject(orderItem.ItemOrdered, _configuration);
     }
 }
+
 

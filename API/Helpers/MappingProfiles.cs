@@ -1,7 +1,6 @@
 ﻿using Core.Entities.OrderAggregate;
 using Address = Core.Entities.OrderAggregate.Address;
 using Order = Core.Entities.OrderAggregate.Order;
-
 namespace API.Helpers;
 public class MappingProfiles : Profile
 {
@@ -12,7 +11,6 @@ public class MappingProfiles : Profile
             .ForMember(dest => dest.ProductBrand, opt => opt.MapFrom(src => src.ProductBrand.Name))
             .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom<ProductUrlResolver>())
             .ReverseMap();
-
         CreateMap<Address, AddressDto>().ReverseMap();
 
         CreateMap<Order, OrderToReturnDto>()

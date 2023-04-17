@@ -4,13 +4,17 @@ public class AccountController : BaseApiController
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly ITokenService _tokenService;
+    private readonly MapsterMapper.IMapper _mapster;
+
     public AccountController(UserManager<AppUser> userManager,
                              SignInManager<AppUser> signInManager,
-                             ITokenService tokenService)
+                             ITokenService tokenService,
+                             MapsterMapper.IMapper mapster)
     {
         _userManager = Guard.Against.Null(userManager, nameof(userManager));
         _signInManager = Guard.Against.Null(signInManager, nameof(signInManager));
         _tokenService = Guard.Against.Null(tokenService, nameof(tokenService));
+        _mapster = Guard.Against.Null(mapster, nameof(mapster));
     }
 
     [HttpGet("emailexists")]
@@ -32,22 +36,20 @@ public class AccountController : BaseApiController
     public async Task<ActionResult<AddressDto>> GetUserAddress()
     {
         var user = await _userManager.FindByEmailWithAddressAsync(User);
-
-        return (AddressDto)user.Address;
+        return _mapster.Map<AddressDto>(user.Address);
     }
 
     [Authorize, HttpPut("address")]
     public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto address)
     {
         var user = await _userManager.FindByEmailWithAddressAsync(User);
-
-        user.Address = (Address)address;
+        user.Address = _mapster.Map<Address>(address);
 
         var result = await _userManager.UpdateAsync(user);
 
         if (result.Succeeded)
         {
-            return Ok((AddressDto)user.Address);
+            return Ok(_mapster.Map<AddressDto>(user.Address));
         }
 
         return BadRequest("Problem updating the user");
