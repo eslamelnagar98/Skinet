@@ -1,10 +1,8 @@
-﻿using Core.Interfaces;
-
-namespace Infrastructure.Data;
+﻿namespace Infrastructure.Data;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly StoreContext _storeContext;
-    private Dictionary<string, object> _repositories = new();
+    private readonly Dictionary<string, object> _repositories = new();
 
     public UnitOfWork(StoreContext storeContext)
     {
@@ -26,7 +24,7 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task<int> Complete()
     {
-       return await _storeContext.SaveChangesAsync();
+        return await _storeContext.SaveChangesAsync();
     }
 
     public void Dispose()

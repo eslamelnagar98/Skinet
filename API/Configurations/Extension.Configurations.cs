@@ -1,6 +1,4 @@
-﻿using Mapster;
-using MapsterMapper;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 
 namespace API.Configurations;
 public static partial class Extension

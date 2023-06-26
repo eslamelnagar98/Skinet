@@ -3,22 +3,24 @@ namespace API.Helpers;
 internal sealed class MapsterConfigurationsBuilder
 {
     private readonly IConfiguration _configuration;
-    public MapsterConfigurationsBuilder(IConfiguration configuration)
+    private readonly TypeAdapterConfig _mapsterConfig;
+    public MapsterConfigurationsBuilder(IConfiguration configuration, TypeAdapterConfig mapsterConfigurations)
     {
         _configuration = Guard.Against.Null(configuration, nameof(configuration));
+        _mapsterConfig = mapsterConfigurations;
     }
-    public MapsterConfigurationsBuilder MapOrderItem(TypeAdapterConfig config)
+    public MapsterConfigurationsBuilder MapOrderItem()
     {
-        config.NewConfig<OrderItem, OrderItemDto>()
+        _mapsterConfig.NewConfig<OrderItem, OrderItemDto>()
               .Map(dest => dest.ProductId, src => src.ItemOrdered.ProductItemId)
               .Map(dest => dest.ProductName, src => src.ItemOrdered.ProductName)
               .Map(dest => dest.PictureUrl, src => Expression(src.ItemOrdered))
               .TwoWays();
         return this;
     }
-    public MapsterConfigurationsBuilder MapOrderToOrderDto(TypeAdapterConfig config)
+    public MapsterConfigurationsBuilder MapOrderToOrderDto()
     {
-        config.NewConfig<Order, OrderToReturnDto>()
+        _mapsterConfig.NewConfig<Order, OrderToReturnDto>()
                 .Map(dest => dest.DeliveryMethod, src => src.DeliveryMethod.ShortName)
                 .Map(dest => dest.ShippingPrice, src => src.DeliveryMethod.Price)
                 .Map(dest => dest.Total, src => src.GetTotal())
@@ -26,22 +28,25 @@ internal sealed class MapsterConfigurationsBuilder
         return this;
     }
 
-    public MapsterConfigurationsBuilder MapAddressToAddressDto<Tsource, TDestination>(TypeAdapterConfig config)
+    public MapsterConfigurationsBuilder MapAddressToAddressDto<Tsource, TDestination>()
     {
-        config.NewConfig<Tsource, TDestination>()
+        _mapsterConfig.NewConfig<Tsource, TDestination>()
               .IgnoreNullValues(true)
               .TwoWays();
         return this;
     }
 
-    public MapsterConfigurationsBuilder MapProductToProductToReturnDto(TypeAdapterConfig config)
+    public MapsterConfigurationsBuilder MapProductToProductToReturnDto()
     {
-        config.NewConfig<Product, ProductToReturnDto>()
+        _mapsterConfig.NewConfig<Product, ProductToReturnDto>()
               .Map(dest => dest.ProductType, src => src.ProductType.Name)
               .Map(dest => dest.ProductBrand, src => src.ProductBrand.Name)
-              .Map(dest => dest.PictureUrl, src => Expression(src));
+              .Map(dest => dest.PictureUrl, src => Expression(src))
+              .TwoWays();
         return this;
     }
+
+    public TypeAdapterConfig Build() => _mapsterConfig;
 
     private string Expression<TSource>(TSource source)
         where TSource : class

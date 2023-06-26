@@ -5,15 +5,19 @@ public class ProductsController : BaseApiController
     private readonly IGenericRepository<ProductBrand> _productBrand;
     private readonly IGenericRepository<ProductType> _productType;
     private readonly MapsterMapper.IMapper _mapster;
+    private readonly StoreContext _storeContext;
+
     public ProductsController(IGenericRepository<Product> productRepository,
                               IGenericRepository<ProductBrand> productBrand,
                               IGenericRepository<ProductType> productType,
-                              MapsterMapper.IMapper mapster)
+                              MapsterMapper.IMapper mapster,
+                              StoreContext storeContext)
     {
         _productRepository = Guard.Against.Null(productRepository, nameof(productRepository));
         _productBrand = Guard.Against.Null(productBrand, nameof(productBrand));
         _productType = Guard.Against.Null(productType, nameof(productType));
         _mapster = Guard.Against.Null(mapster, nameof(mapster));
+        _storeContext = storeContext;
     }
 
     [HttpGet]

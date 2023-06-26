@@ -1,7 +1,6 @@
-﻿using AutoMapper;
-using Core.Entities.OrderAggregate;
+﻿using Core.Entities.OrderAggregate;
 namespace API.Helpers;
-public class OrderItemUrlResolver: IValueResolver<OrderItem, OrderItemDto, string>
+public class OrderItemUrlResolver : IValueResolver<OrderItem, OrderItemDto, string>
 {
     private readonly IConfiguration _configuration;
     public OrderItemUrlResolver(IConfiguration configuration)

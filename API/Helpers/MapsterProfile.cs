@@ -1,19 +1,20 @@
-﻿using Mapster;
-namespace API.Helpers;
+﻿namespace API.Helpers;
 using Address = Core.Entities.OrderAggregate.Address;
 internal class MapsterProfile : IRegister
 {
-    private readonly MapsterConfigurationsBuilder _mapsterConfigurationBuilder;
+    private readonly IConfiguration _configuration;
     public MapsterProfile(IConfiguration configuration)
     {
-        _mapsterConfigurationBuilder = new(configuration);
+        _configuration = configuration;
     }
     public void Register(TypeAdapterConfig config)
     {
-        _mapsterConfigurationBuilder
-            .MapOrderToOrderDto(config)
-            .MapOrderItem(config)
-            .MapAddressToAddressDto<Core.Entities.Identity.Address, AddressDto>(config)
-            .MapAddressToAddressDto<Address, AddressDto>(config);
+         new MapsterConfigurationsBuilder(_configuration, config)
+            .MapOrderToOrderDto()
+            .MapOrderItem()
+            .MapAddressToAddressDto<Core.Entities.Identity.Address, AddressDto>()
+            .MapAddressToAddressDto<Address, AddressDto>()
+            .MapProductToProductToReturnDto()
+            .Build();
     }
 }

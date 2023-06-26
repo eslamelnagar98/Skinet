@@ -20,5 +20,6 @@ global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using StackExchange.Redis;
-
+global using System.Linq.Expressions;
+global using Microsoft.EntityFrameworkCore.Query;
 
