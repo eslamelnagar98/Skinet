@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, ReplaySubject, map, of } from 'rxjs';
+import { Observable, ReplaySubject, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ILoginDto, IRegisterDto, IUser } from '../shared/models/user';
+import { IAddress } from '../shared/models/address';
 
 @Injectable({
   providedIn: 'root'
@@ -64,5 +65,13 @@ export class AccountService {
     let params: HttpParams = new HttpParams().append("email", email);
 
     return this.httpClient.get(`${this.baseUrl}${this.accountEndPoint}/emailexists`, { observe: 'response', params })
+  }
+
+  getUserAddress() {
+    return this.httpClient.get<IAddress>(`${this.baseUrl}${this.accountEndPoint}/address`);
+  }
+
+  updateUserAddress(address: IAddress) {
+    return this.httpClient.put<IAddress>(`${this.baseUrl}${this.accountEndPoint}/address`, address)
   }
 }

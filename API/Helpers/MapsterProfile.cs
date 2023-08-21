@@ -9,12 +9,12 @@ internal class MapsterProfile : IRegister
     }
     public void Register(TypeAdapterConfig config)
     {
-         new MapsterConfigurationsBuilder(_configuration, config)
-            .MapOrderToOrderDto()
-            .MapOrderItem()
-            .MapAddressToAddressDto<Core.Entities.Identity.Address, AddressDto>()
-            .MapAddressToAddressDto<Address, AddressDto>()
-            .MapProductToProductToReturnDto()
-            .Build();
+        new MapsterConfigurationsBuilder(_configuration, config)
+           .MapOrderToOrderDto()
+           .MapOrderItem()
+           .MapAddressToAddressDto<Core.Entities.Identity.Address, AddressDto>()
+           .MapAddressToAddressDto<Address, AddressDto>()
+           .MapProductToProductToReturnDto()
+           .Build();
     }
 }

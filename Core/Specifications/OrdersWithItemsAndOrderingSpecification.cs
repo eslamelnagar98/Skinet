@@ -10,7 +10,7 @@ public class OrdersWithItemsAndOrderingSpecification : BaseSpecification<Order>
     }
 
     public OrdersWithItemsAndOrderingSpecification(int id, string email)
-        : base(order=>order.BuyerEmail==email && order.Id==id)
+        : base(order => order.BuyerEmail == email && order.Id == id)
     {
         AddInclude(order => order.DeliveryMethod);
         AddInclude(order => order.OrderItems);

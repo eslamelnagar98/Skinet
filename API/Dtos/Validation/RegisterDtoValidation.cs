@@ -1,10 +1,10 @@
 ﻿namespace API.Dtos.Validation;
 public class RegisterDtoValidation : AbstractValidator<RegisterDto>
 {
-	public RegisterDtoValidation()
-	{
-		RuleFor(register => register.DisplayName)
-			.NotEmpty();
+    public RegisterDtoValidation()
+    {
+        RuleFor(register => register.DisplayName)
+            .NotEmpty();
         RuleFor(register => register.Email)
             .EmailAddress();
         RuleFor(register => register.Password)

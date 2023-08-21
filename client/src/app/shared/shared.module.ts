@@ -5,20 +5,22 @@ import { PagingHeaderComponent } from './components/paging-header/paging-header.
 import { PagerComponent } from './components/pager/pager.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { OrderTotalsComponent } from './order-totals/order-totals.component';
-import { TextInputComponent } from './components/text-input/text-input.component'
+import { TextInputComponent } from './components/text-input/text-input.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { StepperComponent } from './components/stepper/stepper.component';
-
-
+import { MatStepperModule } from '@angular/material/stepper';
+import { BasketSummeryComponent } from './components/basket-summery/basket-summery.component';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     PagingHeaderComponent,
     PagerComponent,
     OrderTotalsComponent,
     TextInputComponent,
-    StepperComponent
+    StepperComponent,
+    BasketSummeryComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,9 @@ import { StepperComponent } from './components/stepper/stepper.component';
     CarouselModule.forRoot(),
     BsDropdownModule.forRoot(),
     ReactiveFormsModule,
-    CdkStepperModule
+    CdkStepperModule,
+    MatStepperModule,
+    RouterModule
   ],
   exports: [
     PaginationModule,
@@ -38,7 +42,9 @@ import { StepperComponent } from './components/stepper/stepper.component';
     BsDropdownModule,
     TextInputComponent,
     CdkStepperModule,
-    StepperComponent
+    StepperComponent,
+    MatStepperModule,
+    BasketSummeryComponent
   ]
 })
 export class SharedModule { }

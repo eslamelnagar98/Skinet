@@ -10,7 +10,7 @@ public class StoreContext : DbContext
     public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
     public StoreContext(DbContextOptions<StoreContext> options)
         : base(options) { }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

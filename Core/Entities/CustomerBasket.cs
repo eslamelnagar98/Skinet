@@ -7,6 +7,6 @@ public class CustomerBasket
         Id = id;
     }
 
-    public string Id {  get; set; }
+    public string Id { get; set; }
     public List<BasketItem> BasketItems { get; set; } = new();
 }

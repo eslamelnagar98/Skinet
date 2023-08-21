@@ -20,6 +20,6 @@ public class AppIdentityDbContextSeed
                 ZipCode = "90210"
             }
         };
-         await userManager.CreateAsync(user, "Pa$$w0rd");
+        await userManager.CreateAsync(user, "Pa$$w0rd");
     }
 }

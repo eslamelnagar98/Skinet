@@ -5,7 +5,7 @@ public class ProductUrlResolver : IValueResolver<Product, ProductToReturnDto, st
 
     public ProductUrlResolver(IConfiguration configuration)
     {
-        _configuration = Guard.Against.Null(configuration,nameof(configuration));
+        _configuration = Guard.Against.Null(configuration, nameof(configuration));
     }
     public string Resolve(Product product, ProductToReturnDto productToReturnDto, string destMember, ResolutionContext context)
     {

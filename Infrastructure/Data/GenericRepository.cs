@@ -61,7 +61,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     {
         return await SpecificationEvaluator<TEntity>.GetQuery(
             _storeContext.Set<TEntity>()
-            .AsQueryable(), 
+            .AsQueryable(),
             specification);
     }
 

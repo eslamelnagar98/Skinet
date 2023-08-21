@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { AccountService } from 'src/app/account/account.service';
+import { IAddress } from 'src/app/shared/models/address';
 
 @Component({
   selector: 'app-checkout-address',
@@ -7,9 +11,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckoutAddressComponent implements OnInit {
 
-  constructor() { }
+  @Input() checkoutForm: FormGroup;
+  constructor(private accountService: AccountService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
   }
 
+  setAddressAsDefaultAddress() {
+    const address: IAddress = this.checkoutForm.get('addressForm').value;
+    this.accountService.updateUserAddress(address).subscribe({
+      next: _ => {
+        console.log('Islam');
+        this.toastr.success('Address saved');
+      },
+      error: (error: Error) => {
+        this.toastr.error(error.message);
+        console.log(error);
+      }
+    })
+  }
 }
