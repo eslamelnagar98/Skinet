@@ -3,7 +3,12 @@
     <li class="nav-item" *ngFor="let step of _steps; let i = index">
       <button (click)="onClick(i)" [class.active]="selectedIndex === i"
         class="nav-link py-3 text-uppercase font-weight-bold btn-block">
-        {{ step.label }}{{ step.label !== 'Review' ? ':' + step.completed : '' }}
+        {{ step.label }}
+        <ng-container *ngIf="step.label !== 'Review'">
+          <i [ngClass]="step.completed ? 'fa fa-check' : 'fa fa-times'"
+            [style.color]="step.completed ? '#4BB543' : '#ff0000'" aria-hidden="true">
+          </i>
+        </ng-container>
       </button>
     </li>
   </ul>

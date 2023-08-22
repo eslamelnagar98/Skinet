@@ -31,9 +31,11 @@ export class AccountService {
           localStorage.setItem(this.localStorageKey, user.token);
           this.currentUserSource.next(user);
         }
+        return user;
       })
     )
   }
+
   login(loginDto: ILoginDto) {
     return this.httpClient.post(`${this.baseUrl}${this.accountEndPoint}/login`, loginDto).pipe(
       map((user: IUser) => {

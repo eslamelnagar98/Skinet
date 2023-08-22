@@ -4,6 +4,7 @@ import { BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Basket, IBasket, IBasketItem, IBasketTotals } from '../shared/models/basket';
 import { IProduct } from '../shared/models/Product';
+import { IDeliveryMethod } from '../shared/models/deliveryMethod';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +18,15 @@ export class BasketService {
   basket$ = this.basketSource.asObservable();
   basketTotals$ = this.basketTotalSource.asObservable();
   localStorageKey: string = 'basket_id';
+  shippingFees: number = 0;
   constructor(private httpClient: HttpClient) { }
 
-  incrementQuantity(item: IBasketItem) {
+  setShippingFees(deliveryMethod: IDeliveryMethod) {
+    this.shippingFees = deliveryMethod.price;
+    this.calculateTotals();
+  }
 
+  incrementQuantity(item: IBasketItem) {
     const basket = this.getCurrentBasketValue();
     const foundItemIndex = basket.basketItems.findIndex(basketItem => basketItem.id == item.id);
     basket.basketItems[foundItemIndex].quantity++;
@@ -28,7 +34,6 @@ export class BasketService {
   }
 
   decrementQuantity(item: IBasketItem) {
-
     const basket = this.getCurrentBasketValue();
     const foundItemIndex = basket.basketItems.findIndex(basketItem => basketItem.id == item.id);
     const basketItemHasMoreThanOneElement = basket.basketItems[foundItemIndex].quantity > 1;
@@ -71,6 +76,7 @@ export class BasketService {
           const basket = response.body;
           this.basketSource.next(basket);
           this.calculateTotals();
+          return basket;
         })
       );
   }
@@ -127,7 +133,7 @@ export class BasketService {
 
   private calculateTotals() {
     const basket = this.getCurrentBasketValue();
-    const shipping = 0;
+    const shipping = this.shippingFees;
     const subtotal = basket.basketItems.reduce((previous, current) => previous + (current.price * current.quantity), 0) ?? 0;
     const total = subtotal + shipping;
     this.basketTotalSource.next({ shipping, total, subtotal });
