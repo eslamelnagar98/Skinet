@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, ReplaySubject, map, of } from 'rxjs';
+import { ReplaySubject, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ILoginDto, IRegisterDto, IUser } from '../shared/models/user';
 import { IAddress } from '../shared/models/address';
@@ -10,7 +10,6 @@ import { IAddress } from '../shared/models/address';
   providedIn: 'root'
 })
 export class AccountService {
-
   baseUrl = environment.apiUrl;
   accountEndPoint = "Account";
   localStorageKey: string = 'token';
@@ -62,10 +61,9 @@ export class AccountService {
     this.currentUserSource.next(null);
     this.router.navigateByUrl('/');
   }
-
+  
   checkEmailExist(email: string) {
     let params: HttpParams = new HttpParams().append("email", email);
-
     return this.httpClient.get(`${this.baseUrl}${this.accountEndPoint}/emailexists`, { observe: 'response', params })
   }
 

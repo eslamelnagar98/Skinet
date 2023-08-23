@@ -42,8 +42,8 @@ export class RegisterComponent implements OnInit {
 
   validateEmailNotTaken(): AsyncValidatorFn {
     return control => {
-      return timer(400).pipe(
-        switchMap(() => {
+      return timer(100).pipe(
+        switchMap(_ => {
           if (!control.value) {
             return of(null);
           }

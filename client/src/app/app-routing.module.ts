@@ -5,6 +5,7 @@ import { ServerErrorComponent } from './core/server-error/server-error.component
 import { TestErrorComponent } from './core/test-error/test-error.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { BasketGuard } from './core/guards/basket.guard';
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
   { path: 'test-error', component: TestErrorComponent, data: { breadCrumb: 'TestErrors' } },
@@ -20,7 +21,7 @@ const routes: Routes = [
   },
   {
     path: 'checkout',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, BasketGuard],
     loadChildren: () => import('./checkout/checkout.module').then(mod => mod.CheckoutModule),
     data: { breadCrumb: 'checkout' }
   },

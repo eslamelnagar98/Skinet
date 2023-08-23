@@ -10,7 +10,6 @@ import { IDeliveryMethod } from '../shared/models/deliveryMethod';
   providedIn: 'root'
 })
 export class BasketService {
-
   baseUrl = environment.apiUrl;
   endPointName = 'Basket';
   private basketSource = new BehaviorSubject<IBasket>(null);
@@ -60,14 +59,17 @@ export class BasketService {
     let params: HttpParams = new HttpParams().append("basketId", basket.id);
     return this.httpClient.delete(`${this.baseUrl}${this.endPointName}`, { observe: 'response', params }).subscribe({
       next: () => {
-        this.basketSource.next(null);
-        this.basketTotalSource.next(null);
-        localStorage.removeItem(this.localStorageKey)
+        this.deleteLocalBasket();
       },
       error: (error) => console.error(error)
     })
   }
 
+  deleteLocalBasket() {
+    this.basketSource.next(null);
+    this.basketTotalSource.next(null);
+    localStorage.removeItem(this.localStorageKey)
+  }
   getBasket(id: string) {
     let params: HttpParams = new HttpParams().append("basketId", id);
     return this.httpClient.get(`${this.baseUrl}${this.endPointName}`, { observe: 'response', params })
