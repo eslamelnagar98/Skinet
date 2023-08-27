@@ -61,6 +61,7 @@ public static partial class Extension
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IBasketRepository, BasketRepository>();
+        services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         return services;
     }

@@ -1,6 +1,5 @@
 ﻿global using System;
 global using System.Collections.Generic;
-global using System.IO;
 global using System.Linq;
 global using System.Linq.Expressions;
 global using System.Reflection;
@@ -19,7 +18,10 @@ global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.EntityFrameworkCore.Query;
+global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using StackExchange.Redis;
-
+global using Stripe;
+global using Product = Core.Entities.Product;
+global using File = System.IO.File;

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { BasketService } from 'src/app/basket/basket.service';
+import { IBasket } from 'src/app/shared/models/basket';
 
 @Component({
   selector: 'app-checkout-review',
@@ -7,10 +11,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckoutReviewComponent implements OnInit {
 
-  constructor() { }
+  basket$: Observable<IBasket>;
+  constructor(private basketService: BasketService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    console.log('Checkout-Review');
+    this.basket$ = this.basketService.basket$;
   }
 
 }

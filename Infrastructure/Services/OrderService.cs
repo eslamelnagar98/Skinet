@@ -1,4 +1,5 @@
-﻿using Address = Core.Entities.OrderAggregate.Address;
+﻿using System.Linq;
+using Address = Core.Entities.OrderAggregate.Address;
 using Order = Core.Entities.OrderAggregate.Order;
 namespace Infrastructure.Services;
 public class OrderService : IOrderService
@@ -19,8 +20,12 @@ public class OrderService : IOrderService
         var order = await PrepareOrder(orderItems, buyerEmail, shippingAddress, deliveryMethodId);
         await _unitOfWork.Repository<Order>().AddAsync(order);
         var result = await _unitOfWork.Complete();
-        if (result <= 0) return null;
-        await _basketRepository.DeleteBasketAsync(basketId);
+        if (result <= 0)
+        {
+            return null;
+        }
+        basket.DeliveryMethod = deliveryMethodId;
+        await _basketRepository.UpdateBasketAsync(basket);
         return order;
     }
 
@@ -52,7 +57,10 @@ public class OrderService : IOrderService
         }
     }
 
-    private async Task<Order> PrepareOrder(IReadOnlyList<OrderItem> orderItems, string email, Address shippingAddress, int deliveryMethodId)
+    private async Task<Order> PrepareOrder(IReadOnlyList<OrderItem> orderItems,
+                                           string email,
+                                           Address shippingAddress,
+                                           int deliveryMethodId)
     {
         var subTotal = orderItems.Sum(orderItem => orderItem.Price * orderItem.Quantity);
         var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetByIdAsync(deliveryMethodId);
