@@ -2,7 +2,6 @@
 public class BasketController : BaseApiController
 {
     private readonly IBasketRepository _basketRepository;
-
     public BasketController(IBasketRepository basketRepository)
     {
         _basketRepository = Guard.Against.Null(basketRepository, nameof(basketRepository));

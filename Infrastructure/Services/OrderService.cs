@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Address = Core.Entities.OrderAggregate.Address;
+﻿using Address = Core.Entities.OrderAggregate.Address;
 using Order = Core.Entities.OrderAggregate.Order;
 namespace Infrastructure.Services;
 public class OrderService : IOrderService

@@ -1,8 +1,11 @@
 ﻿global using System;
 global using System.Collections.Generic;
+global using System.IdentityModel.Tokens.Jwt;
 global using System.Linq;
 global using System.Linq.Expressions;
 global using System.Reflection;
+global using System.Security.Claims;
+global using System.Text;
 global using System.Text.Json;
 global using System.Threading.Tasks;
 global using Ardalis.GuardClauses;
@@ -25,3 +28,4 @@ global using StackExchange.Redis;
 global using Stripe;
 global using Product = Core.Entities.Product;
 global using File = System.IO.File;
+global using Microsoft.IdentityModel.Tokens;

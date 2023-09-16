@@ -1,6 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
-
-namespace API.Configurations;
+﻿namespace API.Configurations;
 public static partial class Extension
 {
     public static IServiceCollection AddSwaggerAuthorizationSecurity(this IServiceCollection service)
