@@ -1,12 +1,12 @@
 var app = default(WebApplication);
 try
 {
-    app = await WebApplication.CreateBuilder(args)
+    app = WebApplication.CreateBuilder(args)
                   .CreateSkinetBuilder()
-                  .RegisterCustomeMidllewares();
-
-    await app.RegisterMidllewares()
-             .RunAsync();
+                  .RegisterCustomeMidllewares()
+                  .RegisterMidllewares();
+    await app.Services.ApplyMigrations();
+    await app.RunAsync();
 }
 catch (Exception)
 {

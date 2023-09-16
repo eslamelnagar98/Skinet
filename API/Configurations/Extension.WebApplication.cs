@@ -36,9 +36,8 @@ public partial class Extension
         app.MapControllers();
         return app;
     }
-    public static async Task<WebApplication> RegisterCustomeMidllewares(this WebApplication app)
+    public static WebApplication RegisterCustomeMidllewares(this WebApplication app)
     {
-        await app.Services.ApplyMigrations();
         app.UseMiddleware<ExeptionMiddleware>();
         if (app.Environment.IsDevelopment())
         {
